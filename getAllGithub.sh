@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# GitHub username
-USER="raddevus"
+# Check if username was provided
+if [ -z "$1" ]; then
+    echo "Error: No GitHub username provided."
+    echo "Usage: $0 <github-username>"
+    exit 1
+fi
+
+USER="$1"
 
 # Directory where repos will be cloned
 DEST_DIR="$HOME/github-repos/$USER"

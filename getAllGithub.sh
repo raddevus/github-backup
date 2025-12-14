@@ -14,6 +14,20 @@ DEST_DIR="$HOME/github-repos/$USER"
 mkdir -p "$DEST_DIR"
 cd "$DEST_DIR" || exit 1
 
+# Repos to exclude (edit this list manually)
+EXCLUDE_REPOS=("apps" "to-skip-2")
+
+# Function to check if a repo is in the exclusion list
+is_excluded() {
+    local name="$1"
+    for exclude in "${EXCLUDE_REPOS[@]}"; do
+        if [[ "$name" == "$exclude" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
 # Fetch all repos (handles pagination too)
 page=1
 while : ; do
@@ -24,6 +38,12 @@ while : ; do
 
     for repo in $repos; do
         reponame=$(basename "$repo" .git)
+
+	if is_excluded "$reponame"; then
+            echo "Skipping $reponame (excluded)"
+            continue
+        fi
+
         if [ -d "$reponame" ]; then
             echo "Skipping $reponame (already exists)"
         else

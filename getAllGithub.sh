@@ -45,7 +45,8 @@ while : ; do
         fi
 
         if [ -d "$reponame" ]; then
-            echo "Skipping $reponame (already exists)"
+         echo "Updating $reponame ..."
+         (cd "$reponame" && git pull --ff-only)
         else
             echo "Cloning $repo ..."
             git clone "$repo"
